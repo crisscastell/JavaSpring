@@ -13,5 +13,4 @@ public class GeneroDto {
     private Long id;
 
     private String name;
-
 }

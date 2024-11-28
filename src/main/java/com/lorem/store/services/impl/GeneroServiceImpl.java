@@ -1,5 +1,7 @@
 package com.lorem.store.services.impl;
 
+import com.lorem.store.domain.entities.CantanteEntity;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.repository.CrudRepository.*;
 import com.lorem.store.domain.entities.GeneroEntity;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 
-
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,34 +25,30 @@ public class GeneroServiceImpl implements  GeneroService {
     }
 
     @Override
-    public GeneroEntity createGenero(GeneroEntity generoEntity) {
+    public GeneroEntity crearGenero(GeneroEntity generoEntity) {
         return generoRepository.save(generoEntity);
     }
 
     @Override
-    public Optional<GeneroEntity> getGeneroById(Long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public GeneroEntity readGenero(Long id) {
+    public GeneroEntity obtenerGenero(Long id) {
         return generoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Genero no encontrado con ID: " + id));
     }
 
     @Override
-    public Optional<GeneroEntity> updateGenero(Long id, GeneroEntity generoEntity) {
-        Optional<GeneroEntity> generoExistente = getGeneroById(id);
-        if(generoExistente.isPresent()){
-            GeneroEntity genero = generoExistente.get();
-            genero.setName(generoEntity.getName());
-            return Optional.of(generoRepository.save(genero));
-       } else {
-            return Optional.empty();
-        }
+    public List<GeneroEntity> obtenerTodosGeneros() {
+        return (List<GeneroEntity>) generoRepository.findAll();
     }
 
-    @DeleteMapping("/{id}") public void deleteGenero( Long id) { generoRepository.deleteById(id); }
+    @Override
+    public GeneroEntity actualizarGenero(GeneroEntity generoEntity) {
+        return generoRepository.save(generoEntity);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteGenero( Long id) {
+        generoRepository.deleteById(id);
+    }
 }
 
 

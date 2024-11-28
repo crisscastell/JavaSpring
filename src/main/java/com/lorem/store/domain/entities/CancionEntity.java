@@ -6,12 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "cancion")
+@Table(name = "canciones")
 public class CancionEntity {
 
     @Id
@@ -20,8 +23,17 @@ public class CancionEntity {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(
+            name = "canciones-cantantes",
+            joinColumns = @JoinColumn(name = "cancion_id"),
+            inverseJoinColumns = @JoinColumn(name = "cantante_id")
+    )
+    private Set<CantanteEntity> cantante = new HashSet<>();
+
+    @ManyToOne
     @JoinColumn(name = "genero_id")
     private GeneroEntity genero;
+
 
 }
